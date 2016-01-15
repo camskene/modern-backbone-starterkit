@@ -1,8 +1,14 @@
-var entry = './src/app/main.js',
-  output = {
+var webpack = require('webpack');
+
+var entry = {
+    app: './src/app/main.js',
+    vendor: ['backbone', 'underscore', 'jquery']
+};
+
+var output = {
     path: __dirname,
-    filename: 'main.js'
-  };
+    filename: 'bundle.js'
+};
 
 module.exports.development = {
     debug : true,
@@ -14,7 +20,10 @@ module.exports.development = {
             { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
             { test: /\.hbs$/, loader: 'handlebars-loader' }
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+    ],
 };
 
 module.exports.production = {
@@ -26,5 +35,8 @@ module.exports.production = {
             { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
             { test: /\.hbs$/, loader: 'handlebars-loader' }
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+    ],
 };
